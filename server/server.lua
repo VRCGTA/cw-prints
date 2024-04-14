@@ -2,6 +2,36 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local entryCoords = Config.Locations.shopEntranceCoords
 local exitCoords = Config.Locations.shopExitCoords
 
+local function webHookBook(data)
+    TweetWebHook = 'https://discord.com/api/webhooks/1229080532764065913/rSTb_CHvlKp8eIzmD5EzEO4eZwXpVx8Oc4aj6gQQ_rMTk59_sIQiE8Y607MQZ9k6bRuf'
+
+    print(TweetWebHook)
+    contents = ""
+    for i = 1, #data.pages do
+        if string.sub(data.pages[i], 1,1) == "\"" and string.sub(data.pages[i], -1, -1) == "\"" then
+            data.pages[i] = string.sub(data.pages[i], 2, -2)
+        end
+        contents = contents .. data.pages[i] .. '\n'
+    end
+    local payload = json.encode({
+        username = data.name,
+        content = contents,
+    })
+    PerformHttpRequest(TweetWebHook, function() end, 'POST', payload, { ['Content-Type'] = 'application/json' })
+end
+
+local function webHookCard(data)
+    TweetWebHook = 'https://discord.com/api/webhooks/1229080532764065913/rSTb_CHvlKp8eIzmD5EzEO4eZwXpVx8Oc4aj6gQQ_rMTk59_sIQiE8Y607MQZ9k6bRuf'
+
+    print(TweetWebHook)
+    contents = data.url
+    local payload = json.encode({
+        username = data.name,
+        content = contents,
+    })
+    PerformHttpRequest(TweetWebHook, function() end, 'POST', payload, { ['Content-Type'] = 'application/json' })
+end
+
 local function createBusinessCard(source, data)
     local Player = QBCore.Functions.GetPlayer(source)
     local item = data.type
@@ -17,6 +47,7 @@ local function createBusinessCard(source, data)
 		Player.Functions.RemoveMoney("cash", amount * Config.PrintCost[item])
 		Player.Functions.AddItem(item, amount, nil, info)
 		TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "add")
+        webHookCard(info)
 	elseif Config.Inv == 'ox' then
         if amount < exports.ox_inventory:CanCarryAmount(source, item) then
             if exports.ox_inventory:RemoveItem(source, "cash", amount * Config.PrintCost[item]) then
@@ -51,6 +82,7 @@ local function createBook(source, data)
 		Player.Functions.RemoveMoney("cash",  amount * Config.PrintCost[item])
 		Player.Functions.AddItem(item, amount, nil, info)
 		TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "add")
+        webHookBook(info)
 	elseif Config.Inv == 'ox' then
         if amount < exports.ox_inventory:CanCarryAmount(source, item) then
             if exports.ox_inventory:RemoveItem(source, "cash", amount * Config.PrintCost[item]) then
