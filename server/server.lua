@@ -33,6 +33,7 @@ end
 
 local function createBusinessCard(source, data)
     local Player = QBCore.Functions.GetPlayer(source)
+    local playerName = Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname
     local item = data.type
     local amount = tonumber(data.amount)
 
@@ -46,7 +47,7 @@ local function createBusinessCard(source, data)
 		Player.Functions.RemoveMoney("cash", amount * Config.PrintCost[item])
 		Player.Functions.AddItem(item, amount, nil, info)
 		TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "add")
-        webHookCard(info)
+        webHookCard(info, playerName)
 	elseif Config.Inv == 'ox' then
         if amount < exports.ox_inventory:CanCarryAmount(source, item) then
             if exports.ox_inventory:RemoveItem(source, "cash", amount * Config.PrintCost[item]) then
