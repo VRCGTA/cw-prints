@@ -3,8 +3,10 @@ fx_version 'cerulean'
 game 'gta5'
 
 ui_page 'html/index.html'
+lua54 'yes'
 
 shared_scripts {
+    '@ox_lib/init.lua',
     '@qb-core/shared/locale.lua',
     'locales/en.lua',
     'locales/*.lua',

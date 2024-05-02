@@ -246,6 +246,8 @@ RegisterNetEvent("cw-prints:client:GivePrint", function(data)
 
 RegisterNetEvent("cw-prints:client:openInteraction", function()
     if Config.UseOxLib then
+        local Player = QBCore.Functions.GetPlayerData()
+        local items = Player.job.isboss and Config.Items or Config.CivilianItems
         local dialog = lib.inputDialog(
             Config.Texts.cardMakerHeader,
             {
@@ -253,7 +255,7 @@ RegisterNetEvent("cw-prints:client:openInteraction", function()
                     label = Lang:t("text.type"),
                     name = "type", 
                     type = "select", 
-                    options = Config.Items,
+                    options = items,
                     required = true,
                 },
                 {

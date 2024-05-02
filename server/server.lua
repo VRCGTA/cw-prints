@@ -42,6 +42,7 @@ local function createBusinessCard(source, data)
     info.business = data.business
     info.url = data.url
     info.cardType = data.type
+    info.author = playerName
 
 	if Config.Inv == 'qb' then
 		if Player.Functions.RemoveMoney("cash", amount * Config.PrintCost[item]) then
@@ -80,13 +81,17 @@ local function createBook(source, data)
     info.name = data.name
     info.pages = data.pages
     info.bookType = data.type
+    info.author = playerName
     local amount = tonumber(data.amount)
 
 	if Config.Inv == 'qb' then
-		Player.Functions.RemoveMoney("cash",  amount * Config.PrintCost[item])
-		Player.Functions.AddItem(item, amount, nil, info)
-		TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "add")
-        webHookBook(info, playerName)
+		if Player.Functions.RemoveMoney("cash", amount * Config.PrintCost[item]) then
+            Player.Functions.AddItem(item, amount, nil, info)
+            TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "add")
+            webHookBook(info, playerName)
+        else
+            QBCore.Functions.Notify(source, "プリンターを利用するためのお金が足りない", "error")
+        end
 	elseif Config.Inv == 'ox' then
         if amount < exports.ox_inventory:CanCarryAmount(source, item) then
             if exports.ox_inventory:RemoveItem(source, "cash", amount * Config.PrintCost[item]) then

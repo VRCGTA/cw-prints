@@ -12,7 +12,7 @@ Config.AllowedJobs = {
 Config.UseInteractionPoint = false -- set this to false if you don't want to use the stock locations
 Config.UseShop = false -- set this to false if you don't want to use the shop entrance/exit
 Config.Inv = 'qb' -- Either 'ox' or 'qb'. If you type anything else then thats a you issue
-Config.UseOxLib = false -- Use ox input rather than qb (you'll need to add '@ox_lib/init.lua' in shared_scripts in fxmanifest) 
+Config.UseOxLib = true -- Use ox input rather than qb (you'll need to add '@ox_lib/init.lua' in shared_scripts in fxmanifest) 
 
 Config.Locations = {
     shopEntranceCoords = vector3(-1335.18, -338.17, 36.69),
@@ -53,16 +53,21 @@ Config.Items = {
     { value = "menu", text = "Menu" },
 }
 
+Config.CivilianItems = {
+    { value = "business_card", text = "Business Card" },
+    { value = "flyer", text = "Flyer" },
+}
+
 Config.BookItems = {
     { value = "book", text = "Book" },
  }
 
 Config.PrintCost = {
-    ["business_card"] = 150,
-    ["coupon"] = 700,
-    ["flyer"] = 600,
-    ["menu"] = 300,
-    ["book"] = 1000,
+    ["business_card"] = 1000,
+    ["coupon"] = 100,
+    ["flyer"] = 5000,
+    ["menu"] = 100,
+    ["book"] = 100000,
 }
 
 Config.DynamicPages = {
