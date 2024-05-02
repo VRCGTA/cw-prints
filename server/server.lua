@@ -44,10 +44,13 @@ local function createBusinessCard(source, data)
     info.cardType = data.type
 
 	if Config.Inv == 'qb' then
-		Player.Functions.RemoveMoney("cash", amount * Config.PrintCost[item])
-		Player.Functions.AddItem(item, amount, nil, info)
-		TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "add")
-        webHookCard(info, playerName)
+		if Player.Functions.RemoveMoney("cash", amount * Config.PrintCost[item]) then
+            Player.Functions.AddItem(item, amount, nil, info)
+            TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "add")
+            webHookCard(info, playerName)
+        else
+            QBCore.Functions.Notify(source, "プリンターを利用するためのお金が足りない", "error")
+        end
 	elseif Config.Inv == 'ox' then
         if amount < exports.ox_inventory:CanCarryAmount(source, item) then
             if exports.ox_inventory:RemoveItem(source, "cash", amount * Config.PrintCost[item]) then
